@@ -1,0 +1,436 @@
+/* =========================================================
+   TEMA: JOJO-STYLE BIODATA (original, terinspirasi gaya manga)
+   Fungsi CSS yang dipakai: var(), calc(), clamp(), min(), max(),
+   rgba(), hsl(), url(), linear-gradient(), radial-gradient(),
+   repeating-linear-gradient(), translate(), rotate(), skew(), scale(),
+   attr(), minmax(), repeat()
+   ========================================================= */
+
+:root {
+  --ungu-gelap: hsl(268, 70%, 8%);
+  --ungu: hsl(275, 65%, 28%);
+  --magenta: hsl(320, 85%, 50%);
+  --emas: hsl(45, 100%, 55%);
+  --putih: #fff;
+  --tebal-garis: clamp(3px, 0.6vw, 6px);
+  --jarak: clamp(12px, 3vw, 28px);
+  --bayangan: calc(var(--tebal-garis) * 2);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  color: var(--putih);
+  /* Foto latar diisi dari atribut style di <body> pada HTML (--foto-latar).
+     Jika file foto belum ada, gradient di bawahnya otomatis tampil. */
+  background:
+    var(--foto-latar),
+    radial-gradient(circle at 20% 10%, var(--magenta), transparent 45%),
+    linear-gradient(160deg, var(--ungu-gelap), var(--ungu));
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Lapisan gelap + pola halftone khas manga */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(rgba(0, 0, 0, 0.35) 22%, transparent 24%) 0 0 / 14px 14px,
+    linear-gradient(rgba(20, 5, 40, 0.65), rgba(20, 5, 40, 0.85));
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Garis kecepatan di pinggir layar */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    100deg,
+    transparent 0 40px,
+    rgba(255, 215, 0, 0.05) 40px 42px
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ---------- NAVIGASI ---------- */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--jarak);
+  padding: calc(var(--jarak) * 0.7) var(--jarak);
+  background: linear-gradient(
+    90deg,
+    var(--ungu-gelap),
+    var(--ungu),
+    var(--ungu-gelap)
+  );
+  border-bottom: var(--tebal-garis) solid var(--emas);
+}
+
+nav a {
+  display: inline-block;
+  padding: 8px clamp(16px, 4vw, 38px);
+  font-family: Impact, "Arial Black", sans-serif;
+  font-size: clamp(1rem, 2.4vw, 1.4rem);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--putih);
+  background: var(--magenta);
+  border: var(--tebal-garis) solid var(--putih);
+  transform: skew(-12deg);
+  box-shadow: 5px 5px 0 var(--emas);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
+}
+
+nav a:hover,
+nav a.aktif {
+  background: var(--emas);
+  color: var(--ungu-gelap);
+  transform: skew(-12deg) translateY(-4px) scale(1.06);
+  box-shadow: 8px 8px 0 var(--magenta);
+}
+
+/* ---------- WADAH UTAMA ---------- */
+main {
+  position: relative;
+  z-index: 1;
+  width: min(1100px, 94%);
+  margin: var(--jarak) auto;
+  padding-bottom: calc(var(--jarak) * 2);
+}
+
+/* ---------- JUDUL ---------- */
+.judul {
+  font-family: Impact, "Arial Black", sans-serif;
+  font-size: clamp(2rem, 8vw, 4.6rem);
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--emas);
+  text-shadow:
+    4px 4px 0 var(--magenta),
+    8px 8px 0 var(--ungu-gelap);
+  transform: rotate(-2deg);
+  margin: var(--jarak) 0;
+}
+
+.sub {
+  display: inline-block;
+  padding: 6px 18px;
+  background: var(--emas);
+  color: var(--ungu-gelap);
+  font-weight: bold;
+  letter-spacing: 1px;
+  transform: skew(-10deg);
+  border: 3px solid var(--ungu-gelap);
+}
+
+/* Efek suara "ゴゴゴ" yang bergetar */
+.gogogo {
+  position: absolute;
+  font-family: Impact, "Arial Black", sans-serif;
+  font-size: clamp(1.6rem, 6vw, 4rem);
+  color: rgba(255, 215, 0, 0.22);
+  letter-spacing: 6px;
+  animation: getar 0.25s infinite alternate;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+.gogogo.kiri {
+  top: 8%;
+  left: -2%;
+  transform: rotate(-12deg);
+}
+.gogogo.kanan {
+  bottom: 6%;
+  right: -2%;
+  transform: rotate(10deg);
+}
+
+@keyframes getar {
+  from {
+    translate: -2px 1px;
+  }
+  to {
+    translate: 2px -1px;
+  }
+}
+
+/* ---------- PANEL KOMIK ---------- */
+.panel {
+  position: relative;
+  z-index: 1;
+  padding: var(--jarak);
+  background: rgba(30, 8, 55, 0.88);
+  border: var(--tebal-garis) solid var(--putih);
+  box-shadow:
+    var(--bayangan) var(--bayangan) 0 var(--magenta),
+    calc(var(--bayangan) * 2) calc(var(--bayangan) * 2) 0 var(--emas);
+  margin-bottom: calc(var(--jarak) * 2);
+}
+
+.panel h2 {
+  font-family: Impact, "Arial Black", sans-serif;
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  text-transform: uppercase;
+  color: var(--emas);
+  margin-bottom: var(--jarak);
+  padding-bottom: 6px;
+  border-bottom: 3px dashed var(--magenta);
+}
+
+/* ---------- FOTO PROFIL ---------- */
+.foto {
+  width: clamp(160px, 28vw, 280px);
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: var(--ungu);
+  border: calc(var(--tebal-garis) + 2px) solid var(--emas);
+  box-shadow: 10px 10px 0 var(--magenta);
+  transform: rotate(3deg);
+  transition: transform 0.3s;
+}
+.foto:hover {
+  transform: rotate(-2deg) scale(1.05);
+}
+
+/* ---------- HALAMAN HOME ---------- */
+.hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: calc(var(--jarak) * 1.5);
+  align-items: center;
+  justify-items: center;
+}
+.hero .teks {
+  justify-self: start;
+}
+.hero p {
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  line-height: 1.7;
+  margin: var(--jarak) 0;
+}
+
+.tombol {
+  display: inline-block;
+  margin: 6px 10px 6px 0;
+  padding: 12px 28px;
+  font-family: Impact, "Arial Black", sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ungu-gelap);
+  background: var(--emas);
+  border: 4px solid var(--putih);
+  box-shadow: 6px 6px 0 var(--magenta);
+  transform: skew(-8deg);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.tombol:hover {
+  transform: skew(-8deg) translate(-3px, -3px);
+  box-shadow: 10px 10px 0 var(--magenta);
+}
+
+.kartu-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: var(--jarak);
+}
+.kartu-info div {
+  padding: var(--jarak);
+  text-align: center;
+  background: linear-gradient(135deg, var(--magenta), var(--ungu));
+  border: 3px solid var(--emas);
+  transform: rotate(-1deg);
+}
+.kartu-info div:nth-child(even) {
+  transform: rotate(1.5deg);
+}
+.kartu-info strong {
+  display: block;
+  font-family: Impact, "Arial Black", sans-serif;
+  font-size: 1.5rem;
+  color: var(--emas);
+}
+
+/* ---------- HALAMAN PROFIL ---------- */
+.profil-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  gap: calc(var(------jarak) * 6);
+  align-items: start;
+}
+.profil-grid .foto {
+  justify-self: center;
+}
+
+.data {
+  display: grid;
+  gap: 10px;
+}
+.data div {
+  display: grid;
+  grid-template-columns: max(110px, 30%) 1fr;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.07);
+  border-left: 6px solid var(--magenta);
+}
+.data dt {
+  font-weight: bold;
+  color: var(--emas);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.data dt::after {
+  counter-reset: " = ";
+}
+
+/* Status "Stand" – bar berdasarkan variabel --nilai (0-100) */
+.stat {
+  margin-bottom: 18px;
+}
+.stat span {
+  display: flex;
+  justify-content: space-between;
+  font-family: Impact, "Arial Black", sans-serif;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.stat span::after {
+  content: attr(data-nilai) "%";
+  color: var(--emas);
+}
+.bar {
+  height: 22px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 3px solid var(--putih);
+  transform: skew(-12deg);
+  overflow: hidden;
+}
+.bar i {
+  display: block;
+  height: 100%;
+  width: calc(var(--nilai) * 1%);
+  background: repeating-linear-gradient(
+    45deg,
+    var(--magenta) 0 10px,
+    var(--emas) 10px 20px
+  );
+  animation: isi 1.6s ease-out;
+}
+@keyframes isi {
+  from {
+    width: 0;
+  }
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.tag-list li {
+  list-style: none;
+  padding: 6px 16px;
+  background: var(--magenta);
+  border: 3px solid var(--putih);
+  font-weight: bold;
+  transform: skew(-10deg);
+}
+
+/* ---------- HALAMAN SOCIAL MEDIA ---------- */
+.sosmed {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: calc(var(--jarak) * 1.2);
+}
+
+.sosmed a {
+  --warna: var(--magenta);
+  display: block;
+  padding: var(--jarak);
+  text-decoration: none;
+  color: var(--putih);
+  background: linear-gradient(135deg, var(--warna), var(--ungu-gelap));
+  border: var(--tebal-garis) solid var(--putih);
+  box-shadow: 8px 8px 0 var(--emas);
+  transform: rotate(-1.5deg);
+  transition:
+    transform 0.25s,
+    box-shadow 0.25s;
+}
+.sosmed a:nth-child(even) {
+  transform: rotate(1.5deg);
+}
+.sosmed a:hover {
+  transform: rotate(0deg) scale(1.07);
+  box-shadow: 14px 14px 0 var(--warna);
+}
+.sosmed .nama {
+  display: block;
+  font-family: Impact, "Arial Black", sans-serif;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  text-transform: uppercase;
+  color: var(--emas);
+}
+.sosmed .akun {
+  display: block;
+  margin: 6px 0 14px;
+  opacity: 0.9;
+  word-break: break-all;
+}
+.sosmed .klik {
+  display: inline-block;
+  padding: 4px 14px;
+  background: var(--putih);
+  color: var(--ungu-gelap);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+.sosmed .klik::after {
+  content: " ➜";
+}
+
+.ig {
+  --warna: hsl(330, 80%, 50%);
+}
+.tt {
+  --warna: hsl(180, 90%, 35%);
+}
+.gh {
+  --warna: hsl(220, 15%, 35%);
+}
+.fb {
+  --warna: hsl(220, 80%, 48%);
+}
